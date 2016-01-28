@@ -1,0 +1,38 @@
+<div class="row">
+	<div class="col-md-8">
+		<!-- template code -->
+		<div class="post">
+			<h3><a href="/post/{{ post._id }}">{{ post.title }}</a></h3>
+			<a href="/#/post{{ post._id }}" class="post_image"><img src="{{ (post.photo) ? '/uploads/'+post.photo : '/app/images/no-image.png'; }}" width="100" height="auto" /></a>				<span class="author"><i>{{ post.author }}</i></span>
+			<p>{{ post.body }}</p>
+		</div>
+		<nav class="post-links">
+			<ul>
+				<li><a ui-sref="home"><b>Back to Posts</b></a></li>
+				<li><a href="#/post/{{ post._id }}/edit"><b>Edit</b></a></li>
+				<li><a href="#" ng-click="deletePost();"><b>Delete</b></a></li>
+			</ul>
+		</nav>
+		<div class="comments_block">
+			<h3>Comments ({{ comments.length }})</h3>
+			<article ng-repeat="comment in comments">
+				<p class="comment_desc">{{ comment.comment_desc }}</p>
+				<p class="comment_author"> - 
+					<i>{{ comment.comment_author }}</i> &nbsp;&nbsp; 
+					<img class="close-img" src="/app/images/close.png" ng-click="deleteComment(comment.post_id, comment._id);" title="Delete comment" />
+				</p>
+			</article>
+			<form role="form" method="post">
+				<div class="form-group">
+					<label for="comment_author">Title</label>
+					<input type="text" class="form-control" id="comment_author" name="comment_author" ng_model="comment.comment_author" placeholder="Your Name" />
+				</div>
+				<div class="form-group">
+					<label for="comment_desc">Body</label>
+					<textarea rows="12" class="form-control" id="comment_desc" name="comment_desc" ng-model="comment.comment_desc" placeholder="Your Comment"></textarea>
+				</div>
+				<button type="submit" class="btn btn-default" ng-click="addComment();">Add Comment</button>
+			</form>
+		</div>
+	</div>
+</div>

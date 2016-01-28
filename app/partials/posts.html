@@ -1,0 +1,19 @@
+<div class="row">
+	<div class="col-md-8">
+		<h1>Posts</h1>
+		<div class="new_post_block">
+			<a href="/#/post/create" class="new_post_link"><b>New Post</b></a>
+		</div>
+		<p ng-show="keyword">Search Results for "<b>{{ keyword }}</b>": <a ui-sref="home">clear filter </a></p>
+		<div ng-controller="postCtrl">
+			<p>Total Number of posts: {{ filtered.length }}</p>
+			<div class="post" ng-repeat="post in filtered = (posts | filter: keyword)">
+				<h3><a href="/#/post/{{ post._id }} ">{{ post.title }}</a></h3>
+				<a href="/#/post/{{ post._id }}" class="post_image"><img src="{{ (post.photo) ? '/uploads/'+post.photo : '/app/images/no-image.png'; }}" width="100" height="auto" /></a>
+				<span class="author"><i>{{ post.author }}</i></span>
+				<p>{{ post.body }}</p>
+			</div>
+		</div>
+	</div>
+	<!-- /row -->
+</div>
