@@ -64,6 +64,7 @@ blog.controller('postCreateCtrl', ['$scope', '$http', '$location', '$stateParams
 		$http.get('http://localhost:3000/api/post/'+postId)
 			.success(function(post) {
 				$scope.post = post;
+				$scope.post.photo = 'uploads/'+post.photo;
 			})
 			.error(function(err) {
 				console.log(err);
