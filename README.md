@@ -1,4 +1,4 @@
-# Node JS Blog
+# Blog - MEAN stack
 ## A simple blog using the MEAN (Mongo DB, Express JS, Angular JS, Node JS) stack.
 
 ### Features
