@@ -2,7 +2,7 @@
 	<div class="col-md-8">
 		<!-- template code -->
 		<div class="post">
-			<h3><a href="/post/{{ post._id }}">{{ post.title }}</a></h3>
+			<h3><a href="/#/post/{{ post._id }}">{{ post.title }}</a></h3>
 			<a href="/#/post{{ post._id }}" class="post_image"><img src="{{ (post.photo) ? '/uploads/'+post.photo : '/app/images/no-image.png'; }}" width="100" height="auto" /></a>				<span class="author"><i>{{ post.author }}</i></span>
 			<p>{{ post.body }}</p>
 		</div>
