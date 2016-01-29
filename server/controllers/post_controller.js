@@ -48,13 +48,7 @@ module.exports.addEditPosts = function(req, res) {
 			body = fields.body,
 			author = fields.author;
 		
-		if(title === '' || body === '' || author === '') {
-			res.render('new', {
-				formError: 'Please fill up all the fields'
-			});
-			return false;
-		}
-		else if(fields._id) {
+		if(fields._id) {
 		// Edit post
 			Post.findById(fields._id).exec(function(err, post) {
 				if(err) {
