@@ -7,23 +7,28 @@ var Comment = require('../../server/models/commentModel');
 
 /* Common image upload function */
 function _uploadPostPhoto(files, callback) {
-	var img = files.photo[0],
-		imgName = Date.now()+img.originalFilename;
-		
-	fs.readFile(img.path, function(err, data) {
-		var uploadPath = './uploads/' + imgName;
-		
-		fs.writeFile(uploadPath, data, function(err) {
-			if(err) {
-				console.log(err);
-				return false;
-			}
-			else {
-				console.log('Image name from the private function : ' + imgName);
-				callback(imgName);
-			}
-		});	
-	});
+	if(files.photo === undefined) {
+		callback('');
+	}
+	else {
+		var img = files.photo[0],
+			imgName = Date.now()+img.originalFilename;
+			
+		fs.readFile(img.path, function(err, data) {
+			var uploadPath = './uploads/' + imgName;
+			
+			fs.writeFile(uploadPath, data, function(err) {
+				if(err) {
+					console.log(err);
+					return false;
+				}
+				else {
+					console.log('Image name from the private function : ' + imgName);
+					callback(imgName);
+				}
+			});	
+		});
+	}
 }
 /* Common image upload function */
 
@@ -62,23 +67,23 @@ module.exports.addEditPosts = function(req, res) {
 					// Check if there is an existing image uploaded previously - If it's there and not updated then
 					// keep that image or replace the new image with the updated one.
 					
-					console.log((files));
-					if(!files) {
-						console.log('hi');
-						return false;
+					if(files.photo === undefined) {
 						post.photo = post.photo;
 					}
 					else {
-						console.log('hello');
-						return false;
-						// Delete the existing photo
-						fs.unlinkSync('./uploads/' + post.photo);
+
+						// If there is a photo for the post then delete photo
+						fs.readFile('./uploads/' + post.photo, function(err) {
+							if(!err) {
+								fs.unlinkSync('./uploads/' + post.photo);
+							}
+						});
 						
 						var img = files.photo[0],
 						imgName = Date.now()+img.originalFilename;
 						
 						fs.readFile(img.path, function(err, data) {
-							var uploadPath = './public/uploads/' + imgName;
+							var uploadPath = './uploads/' + imgName;
 							
 							fs.writeFile(uploadPath, data, function(err) {
 								if(err) {
@@ -139,8 +144,12 @@ module.exports.deletePost = function(req, res) {
 				}
 			});
 			
-			// Delete photo
-			fs.unlinkSync('./uploads/' + post.photo);
+			// If there is a photo for the post then delete photo
+			fs.readFile('./uploads/' + post.photo, function(err) {
+				if(!err) {
+					fs.unlinkSync('./uploads/' + post.photo);
+				}
+			});
 		}
 	});
 };
