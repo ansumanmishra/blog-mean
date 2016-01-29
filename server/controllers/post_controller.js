@@ -67,11 +67,10 @@ module.exports.addEditPosts = function(req, res) {
 					else {
 
 						// If there is a photo for the post then delete photo
-						fs.readFile('./uploads/' + post.photo, function(err) {
-							if(!err) {
-								fs.unlinkSync('./uploads/' + post.photo);
-							}
-						});
+						if(fs.existsSync('./uploads/' + post.photo) && post.photo !== '')						
+						{
+							fs.unlinkSync('./uploads/' + post.photo);
+						};
 						
 						var img = files.photo[0],
 						imgName = Date.now()+img.originalFilename;
@@ -139,11 +138,10 @@ module.exports.deletePost = function(req, res) {
 			});
 			
 			// If there is a photo for the post then delete photo
-			fs.readFile('./uploads/' + post.photo, function(err) {
-				if(!err) {
-					fs.unlinkSync('./uploads/' + post.photo);
-				}
-			});
+			if(fs.existsSync('./uploads/' + post.photo))
+			{
+				fs.unlinkSync('./uploads/' + post.photo);
+			}
 		}
 	});
 };
