@@ -138,7 +138,7 @@ module.exports.deletePost = function(req, res) {
 			});
 			
 			// If there is a photo for the post then delete photo
-			if(fs.existsSync('./uploads/' + post.photo))
+			if(fs.existsSync('./uploads/' + post.photo) && post.photo !== '')
 			{
 				fs.unlinkSync('./uploads/' + post.photo);
 			}

@@ -1,14 +1,13 @@
-blog.controller('postCtrl', ['$scope', '$http', function($scope, $http) {
-	$http.get('http://localhost:3000/api/post/getAllPosts').success(function(result) {
+blog.controller('postCtrl', ['$scope', '$http', 'postService', function($scope, $http, postService) {
+	postService.getAllPosts().success(function(result) {
 		$scope.posts = result;
 	});
 }]);
 
-blog.controller('postDetailCtrl', ['$scope', '$http', '$stateParams', '$location', function($scope, $http, $stateParams, $location) {
-	var id = $stateParams.id;
+blog.controller('postDetailCtrl', ['$scope', '$http', '$stateParams', '$location', 'postService', function($scope, $http, $stateParams, $location, postService) {
 	
 	// get post details
-	$http.get('http://localhost:3000/api/post/'+id)
+	postService.getPostDetail()
 		.success(function(post) {
 			$scope.post = post;
 		})
@@ -17,15 +16,15 @@ blog.controller('postDetailCtrl', ['$scope', '$http', '$stateParams', '$location
 	});
 	
 	//get comments for a post
-	$http.get('http://localhost:3000/api/post/'+ id + '/comments').success(function(comments) {
+	postService.getComments().success(function(comments) {
 		$scope.comments = comments;
 	}).error(function(err) {
-		console.error(err)
+		console.error(err);
 	});
 	
 	// delete post
 	$scope.deletePost = function() {
-		$http.delete('http://localhost:3000/api/post/'+id).success(function(result) {
+		postService.deletePost().success(function(result) {
 			$location.path('/');
 		}).error(function(err) {
 			console.error(err);
@@ -35,7 +34,7 @@ blog.controller('postDetailCtrl', ['$scope', '$http', '$stateParams', '$location
 	//Adding comment
 	$scope.addComment = function() {
 
-		$http.post('http://localhost:3000/api/post/'+$stateParams.id+'/comment/add', $scope.comment).success(function(result) {
+		postService.addComment($scope.comment).success(function(result) {
 			$scope.comment = '';
 			$scope.comments = result;
 		}).error(function(err) {
@@ -46,7 +45,7 @@ blog.controller('postDetailCtrl', ['$scope', '$http', '$stateParams', '$location
 	// delete comment
 	$scope.deleteComment = function(postId, commentId) {
 		
-		$http.delete('http://localhost:3000/api/post/'+postId+'/'+commentId).success(function(result) {
+		postService.deleteComment(postId, commentId).success(function(result) {
 			$scope.comments = result;
 		}).error(function(err) {
 			console.error(err);
